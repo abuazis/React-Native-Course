@@ -1,23 +1,14 @@
 import React, {useContext} from 'react';
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Context} from '../context/BlogContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faPlus} from '@fortawesome/free-solid-svg-icons';
 
 const IndexScreen = ({navigation}) => {
-  const {state, addBlogPost, deleteBlogPost} = useContext(Context);
+  const {state, deleteBlogPost} = useContext(Context);
 
   return (
     <View>
-      <Text>Index Screen</Text>
-      <Button title="Add Post" onPress={addBlogPost} />
       <FlatList
         data={state}
         keyExtractor={(blogPost) => blogPost.title}
@@ -41,6 +32,16 @@ const IndexScreen = ({navigation}) => {
   );
 };
 
+IndexScreen.navigationOptions = ({navigation}) => {
+  return {
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+        <FontAwesomeIcon style={styles.icon} size={24} icon={faPlus} />
+      </TouchableOpacity>
+    ),
+  };
+};
+
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -53,6 +54,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+  },
+  icon: {
+    marginRight: 10,
   },
 });
 
