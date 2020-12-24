@@ -1,11 +1,23 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Context} from '../context/BlogContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTrash, faPlus} from '@fortawesome/free-solid-svg-icons';
 
 const IndexScreen = ({navigation}) => {
-  const {state, deleteBlogPost} = useContext(Context);
+  const {state, deleteBlogPost, getBlogPosts} = useContext(Context);
+
+  useEffect(() => {
+    getBlogPosts();
+
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   return (
     <View>
